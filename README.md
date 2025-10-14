@@ -11,4 +11,4 @@ Data cleaning and preprocessing: Jake Miller – Handle missing values, standard
 Writing analysis code and producing visualizations: Randall McCoy– Develop Python scripts for data analysis (e.g., using Pandas and Matplotlib) and creating interactive plots for the dashboard. 
 Managing GitHub workflow (branches, commits, merges): Pratik– Set up repository structure, enforce version control best practices, and coordinate code reviews. 
 Building the Streamlit application: Noah Casey – Design and implement the user interface, integrate visualizations, and deploy the dashboard for public access. 
-Writing documentation and project report: Agustin Rodriguez– Author the README, user guide, and final report, including methodology and findings. 
+Writing documentation and project report: Agustin Rodriguez– Author the README, user guide, and final report, including methodology and findingsss. 
