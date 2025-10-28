@@ -1,0 +1,122 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats  # For median if needed, but pandas has it
+
+# Page config for Streamlit
+st.set_page_config(page_title="Rio Grande Water Consumption Analysis", layout="wide")
+
+# File path - update this to your actual TXT file path
+FILE_PATH = 'water_consumption.txt'  # Assuming the file is comma-separated; adjust sep if tab-delimited (e.g., sep='\t')
+
+@st.cache_data
+def load_data():
+    """
+    Load the TXT file into a pandas DataFrame.
+    Assumes format: County,Year,Consumption (one row per entry).
+    Example rows:
+    Taos,2000,150.5
+    Taos,2005,160.2
+    ...
+    """
+    try:
+        df = pd.read_csv(FILE_PATH)  # Use sep='\t' if tab-separated
+        df['Consumption'] = pd.to_numeric(df['Consumption'], errors='coerce')  # Ensure numeric
+        df = df.dropna(subset=['Consumption'])  # Drop any invalid rows
+        return df
+    except FileNotFoundError:
+        st.error(f"File '{FILE_PATH}' not found. Please update FILE_PATH and ensure the file exists.")
+        return pd.DataFrame()
+
+def calculate_stats(data):
+    """
+    Calculate min, max, mean, median, std, variance for the given data series.
+    """
+    if len(data) == 0:
+        return {}
+    return {
+        'Min': np.min(data),
+        'Max': np.max(data),
+        'Mean': np.mean(data),
+        'Median': np.median(data),
+        'Std Dev': np.std(data, ddof=1),  # Sample standard deviation
+        'Variance': np.var(data, ddof=1)  # Sample variance
+    }
+
+def plot_histogram(data, title, bins=10):
+    """
+    Create and return a histogram plot.
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.hist(data, bins=bins, edgecolor='black', alpha=0.7, color='skyblue')
+    ax.set_title(title)
+    ax.set_xlabel('Water Consumption')
+    ax.set_ylabel('Frequency')
+    plt.tight_layout()
+    return fig
+
+# Main Streamlit app
+st.title("Rio Grande Water Consumption Analysis (NM Counties, 2000-2020)")
+st.markdown("Analyzes water consumption data per county in 5-year increments. Select a county or view all data.")
+
+# Load data
+df = load_data()
+if df.empty:
+    st.stop()  # Stop if no data
+
+# Overall stats for all data
+st.subheader("Overall Statistics (All Counties)")
+overall_data = df['Consumption']
+overall_stats = calculate_stats(overall_data)
+st.metric("Min", overall_stats['Min'])
+st.metric("Max", overall_stats['Max'])
+st.metric("Mean", f"{overall_stats['Mean']:.2f}")
+st.metric("Median", f"{overall_stats['Median']:.2f}")
+st.metric("Std Dev", f"{overall_stats['Std Dev']:.2f}")
+st.metric("Variance", f"{overall_stats['Variance']:.2f}")
+
+# Get unique counties
+counties = sorted(df['County'].unique().tolist())
+counties.insert(0, 'All')  # Add 'All' option at the top
+
+# Dropdown for county selection
+selected_county = st.selectbox("Select County for Detailed View:", counties)
+
+# Filter data based on selection
+if selected_county == 'All':
+    filtered_data = overall_data
+    title_suffix = " (All Counties)"
+else:
+    filtered_df = df[df['County'] == selected_county]
+    filtered_data = filtered_df['Consumption']
+    title_suffix = f" ({selected_county} County)"
+
+# Stats for selected
+st.subheader(f"Statistics{title_suffix}")
+selected_stats = calculate_stats(filtered_data)
+col1, col2, col3, col4, col5, col6 = st.columns(6)
+with col1:
+    st.metric("Min", selected_stats['Min'])
+with col2:
+    st.metric("Max", selected_stats['Max'])
+with col3:
+    st.metric("Mean", f"{selected_stats['Mean']:.2f}")
+with col4:
+    st.metric("Median", f"{selected_stats['Median']:.2f}")
+with col5:
+    st.metric("Std Dev", f"{selected_stats['Std Dev']:.2f}")
+with col6:
+    st.metric("Variance", f"{selected_stats['Variance']:.2f}")
+
+# Histogram for selected
+st.subheader(f"Histogram{title_suffix}")
+fig = plot_histogram(filtered_data, f"Water Consumption Distribution{title_suffix}")
+st.pyplot(fig)
+
+# Optional: Show raw data preview
+with st.expander("View Raw Data Preview"):
+    st.dataframe(df.head(10))
+
+# Optional: Summary info
+st.info(f"Data covers {len(df)} entries across {len(counties)-1} counties from 2000-2020 (5-year increments).")
