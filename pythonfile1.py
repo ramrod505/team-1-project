@@ -8,7 +8,7 @@ from scipy import stats  # For median if needed, but pandas has it
 st.set_page_config(page_title="Rio Grande Water Consumption Analysis", layout="wide")
 
 # File path - update this to your actual TXT file path
-FILE_PATH = 'water_consumption.txt'  # Assuming the file is comma-separated; adjust sep if tab-delimited (e.g., sep='\t')
+FILE_PATH = 'ENG 220 cleaned data NMCRG.csv'  # Assuming the file is comma-separated; adjust sep if tab-delimited (e.g., sep='\t')
 
 @st.cache_data
 def load_data():

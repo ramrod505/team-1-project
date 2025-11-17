@@ -13,3 +13,10 @@ Managing GitHub workflow (branches, commits, merges): Pratik– Set up repositor
 Building the Streamlit application: Noah Casey – Design and implement the user interface, integrate visualizations, and deploy the dashboard for public access. 
 Writing documentation and project report: Agustin Rodriguez– Author the README, user guide, and final report, including methodology and findings. 
 Randall McCoy– Develop Python scripts for data analysis (e.g., using Pandas and Matplotlib) and creating interactive plots for the dashboard. Managing GitHub workflow (branches, commits, merges)
+
+
+Dependencies to run Streamlit site locally:
+openai streamlit library. Info can be found at:https://docs.streamlit.io/develop/tutorials/chat-and-llm-apps/build-conversational-apps#build-a-chatgpt-like-app
+Python 3.12
+Streamlit Library (newest release)
+Matplotlib (pip install matplotlib)
