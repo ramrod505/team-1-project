@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="All Columns Explorer", layout="wide")
+st.set_page_config(page_title="About Us")
 
 FILE_PATH = "ENG 220 cleaned data NMCRG.csv"
 

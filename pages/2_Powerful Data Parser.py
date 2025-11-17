@@ -15,6 +15,8 @@ st.markdown(
     <style>
     .main {
         background-color: #f0f4f8;
+        color: #333333;
+        font-family: 'Arial', sans-serif;
         padding: 20px;
         border-radius: 15px;
     }
@@ -28,8 +30,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("✨ Full Data Explorer")
-st.markdown(" :streamlit: Select any columns to explore and filter the data interactively.:streamlit:")
+st.title("Welcome to our Powerful Data Parser!")
+st.markdown(" :streamlit: Select any columns to explore and filter the data interactively.")
+st.markdown("WARNING: Very complicated to use but the page will dynamically update as you select columns and filters. The outputted table is at the bottom of the page (Depending on your device it may be off screen so scroll down!).")
 
 # Load data
 FILE_PATH = "ENG 220 cleaned data NMCRG.csv"
